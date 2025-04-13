@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Coordinator Dashboard - Campus Recruitment</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Welcome, Coordinator!</h2>
+    <nav>
+      <a href="dashboard-coordinator.html">Dashboard</a>
+      <a href="schedule-interview.html">Schedule Interview</a>
+      <a href="filter-resumes.html">Filter Resumes</a>
+      <a href="#" onclick="logout()">Logout</a>
+    </nav>
+
+    <div id="dashboardData">
+      <h3>All Job Applications:</h3>
+      <ul id="applicationsList"></ul>
+    </div>
+  </div>
+
+  <script src="../assets/js/utils.js"></script>
+  <script>
+    async function fetchApplications() {
+      const data = await apiRequest("/api/coordinator/applications/");
+      const list = document.getElementById("applicationsList");
+      list.innerHTML = "";
+
+      data.forEach(app => {
+        const li = document.createElement("li");
+        li.textContent = `Student: ${app.student} | Job ID: ${app.job} | Status: ${app.status}`;
+        list.appendChild(li);
+      });
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "login.html";
+    }
+
+    fetchApplications();
+  </script>
+</body>
+</html>
+ 

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Recruiter Dashboard - Campus Recruitment</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Welcome, Recruiter!</h2>
+    <nav>
+      <a href="dashboard-recruiter.html">Dashboard</a>
+      <a href="post-job.html">Post a Job</a>
+      <a href="filter-resumes.html">Filter Resumes</a>
+      <a href="#" onclick="logout()">Logout</a>
+    </nav>
+
+    <div id="dashboardData">
+      <h3>Your Posted Jobs:</h3>
+      <ul id="jobsList"></ul>
+    </div>
+  </div>
+
+  <script src="../assets/js/utils.js"></script>
+  <script>
+    async function fetchJobs() {
+      const data = await apiRequest("/api/recruiter/jobs/");
+      const list = document.getElementById("jobsList");
+      list.innerHTML = "";
+
+      data.forEach(job => {
+        const li = document.createElement("li");
+        li.textContent = `${job.title} - ${job.description}`;
+        list.appendChild(li);
+      });
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "login.html";
+    }
+
+    fetchJobs();
+  </script>
+</body>
+</html>
+ 

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Filter Resumes - Campus Recruitment</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Filter Resumes</h2>
+    <nav>
+      <a href="dashboard-recruiter.html">Recruiter Dashboard</a>
+      <a href="dashboard-coordinator.html">Coordinator Dashboard</a>
+      <a href="#" onclick="logout()">Logout</a>
+    </nav>
+
+    <form id="filterForm">
+      <input type="text" id="skill" placeholder="Skill (e.g. Python)" />
+      <input type="number" id="experience" placeholder="Minimum Experience (years)" />
+      <button type="submit">Filter</button>
+    </form>
+
+    <ul id="resultsList"></ul>
+  </div>
+
+  <script src="../assets/js/utils.js"></script>
+  <script>
+    document.getElementById("filterForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const skill = document.getElementById("skill").value;
+      const experience = document.getElementById("experience").value;
+
+      const response = await apiRequest("/api/filter-resumes/", "POST", {
+        skill, experience
+      });
+
+      const list = document.getElementById("resultsList");
+      list.innerHTML = "";
+
+      response.forEach(candidate => {
+        const li = document.createElement("li");
+        li.textContent = `Name: ${candidate.name} | Skills: ${candidate.skills.join(", ")} | Experience: ${candidate.experience} years`;
+        list.appendChild(li);
+      });
+    });
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>

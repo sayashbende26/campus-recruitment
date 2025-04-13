@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Schedule Interview - Campus Recruitment</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Schedule Interview</h2>
+    <nav>
+      <a href="dashboard-coordinator.html">Dashboard</a>
+      <a href="schedule-interview.html">Schedule Interview</a>
+      <a href="#" onclick="logout()">Logout</a>
+    </nav>
+
+    <form id="scheduleForm">
+      <input type="number" id="applicationId" placeholder="Application ID" required />
+      <input type="datetime-local" id="interviewDate" required />
+      <button type="submit">Schedule Interview</button>
+    </form>
+  </div>
+
+  <script src="../assets/js/utils.js"></script>
+  <script>
+    document.getElementById("scheduleForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const applicationId = document.getElementById("applicationId").value;
+      const interviewDate = document.getElementById("interviewDate").value;
+
+      const response = await apiRequest("/api/schedule-interview/", "POST", {
+        application_id: applicationId,
+        interview_date: interviewDate
+      });
+
+      alert(response.message || "Interview Scheduled Successfully!");
+    });
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "login.html";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Apply for Job - Campus Recruitment</title>
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body>
+  <div class="container">
+    <h2>Available Jobs</h2>
+    <nav>
+      <a href="dashboard-student.html">Dashboard</a>
+      <a href="apply-job.html">Apply Job</a>
+      <a href="#" onclick="logout()">Logout</a>
+    </nav>
+
+    <div id="jobsContainer"></div>
+  </div>
+
+  <script src="../assets/js/utils.js"></script>
+  <script>
+    async function fetchJobs() {
+      const data = await apiRequest("/api/jobs/");
+      const container = document.getElementById("jobsContainer");
+      container.innerHTML = "";
+
+      data.forEach(job => {
+        const div = document.createElement("div");
+        div.innerHTML = `
+          <h3>${job.title}</h3>
+          <p>${job.description}</p>
+          <button onclick="applyJob(${job.id})">Apply</button>
+          <hr/>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    async function applyJob(jobId) {
+      const response = await apiRequest("/api/apply/", "POST", { job_id: jobId });
+      alert(response.message || "Applied successfully!");
+      fetchJobs();
+    }
+
+    function logout() {
+      localStorage.clear();
+      window.location.href = "login.html";
+    }
+
+    fetchJobs();
+  </script>
+</body>
+</html>

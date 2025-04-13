@@ -1,0 +1,26 @@
+<!-- /frontend/job-listings.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Job Listings - Campus Recruitment System</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <script>
+        if (!localStorage.getItem('access_token')) {
+            window.location.href = "login.html";
+        }
+    </script>
+
+    <div class="container">
+        <h2>Available Job Listings</h2>
+        <div id="jobs-container"></div>
+
+        <button onclick="goBack()">Go Back</button>
+    </div>
+
+    <script src="js/job-listings.js"></script>
+</body>
+</html>
